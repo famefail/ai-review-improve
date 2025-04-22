@@ -1,8 +1,4 @@
-interface ILoadingProps {
-  isLoading: boolean;
-}
-
-const Loading = ({ isLoading }: ILoadingProps) => {
+const Loading = () => {
   return (
     <div role="status">
       <svg
