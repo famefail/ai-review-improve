@@ -1,11 +1,14 @@
 "use client";
 import { useState } from "react";
+import Loading from "./Loading";
 const Chat = () => {
   const [prompt, setPrompt] = useState("");
   const [geminiRes, setGeminiRes] = useState("");
   const [claudeAIRes, setClaudeAIRes] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendPrompt = async () => {
+    setIsLoading(true);
     const res = await fetch("/api/gemini", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -20,14 +23,15 @@ const Chat = () => {
     });
     const claudeData = await claudeRes.json();
 
+    setIsLoading(false);
     setClaudeAIRes(claudeData);
     setGeminiRes(geminiData.result);
+    setPrompt("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       sendPrompt();
-      setPrompt("");
     }
   };
 
@@ -52,8 +56,15 @@ const Chat = () => {
       </div>
       <div>
         <h1>Gemini</h1>
+
         <div className="bg-gray-100 border border-gray-300 rounded-md p-4 whitespace-pre-wrap font-mono">
-          {geminiRes || "🤖 Waiting for prompt..."}
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <Loading isLoading={isLoading} />
+            </div>
+          ) : (
+            geminiRes || "🤖 Waiting for prompt..."
+          )}
         </div>
       </div>
       {/* {claudeAIRes && (
