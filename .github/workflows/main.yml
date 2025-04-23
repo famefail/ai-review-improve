@@ -13,21 +13,37 @@ jobs:
         "username": "GitHub",
         "content": "@Boy",
         "embeds": [
+        {
+        title: '🚀 ทดสอบการส่ง Embed',
+        description: 'นี่เป็นการทดสอบการส่ง embed ไปยัง Discord จากระบบ AI Code Review & Deployment Monitoring',
+        color: 5763719, // สีเขียว
+        fields: [
           {
-            "type": "rich",
-            "title": "New Changes",
-            "description": "New changes on DroneGPS repository by ${{ github.actor }}",
-            "color": 2123412,
-            "thumbnail": {
-              "url": "https://avatars.githubusercontent.com/u/160980408?v=4"
-            },
-            "author": {
-              "name": "${{ github.actor }}",
-              "url": "https://github.com/${{ github.actor_id }}",
-              "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
-            },
-            "url": "https://github.com/***"
+            name: '📂 โปรเจ็ค',
+            value: 'ai-review-improve',
+            inline: true
+          },
+          {
+            name: '🌿 Branch',
+            value: 'main',
+            inline: true
+          },
+          {
+            name: '👨‍💻 ผู้ Deploy',
+            value: github.actor,
+            inline: true
+          },
+          {
+            name: '📝 Commit Message',
+            value: 'ทดสอบระบบแจ้งเตือน Discord',
+            inline: false
           }
-        ]
+        ],
+        footer: {
+          text: 'AI Code Review System',
+          icon_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+        }
+        }
+        ];  
         }' ${{ secrets.DISCORD_WEBHOOK_URL }})
         echo "Webhook server response: $RESPONSE"
