@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Code Review & Deployment Monitoring System
 
-## Getting Started
+ระบบติดตามคุณภาพโค้ดใน production/staging พร้อม Discord Bot สำหรับแจ้งเตือน Deployment โดยใช้ Next.js
 
-First, run the development server:
+## โครงสร้างระบบ
+
+### A. Discord Bot สำหรับแจ้งเตือน Deployment
+
+- **ฟังก์ชันหลัก**:
+  - รับแจ้งเตือนจาก GitHub (ผ่าน Webhook หรือ GitHub Actions) เมื่อมีการ deploy หรือ merge โค้ด
+  - ตรวจสอบว่า event มาจาก branch ที่กำหนด (เฉพาะ main และ develop) เท่านั้น
+  - ส่งข้อความแจ้งเตือนใน Discord channel พร้อมรายละเอียด เช่น ชื่อโปรเจ็ค, Branch ที่ deploy, ชื่อคน deploy, รายละเอียด commit
+
+- **การส่งข้อมูล**:
+  - ใช้ Discord Webhook หรือ Discord Bot API ในการส่งข้อความแบบ rich embed
+
+### B. Dashboard สำหรับติดตามและวิเคราะห์คุณภาพโค้ด
+
+- **ฟังก์ชันหลัก**:
+  - แสดงประวัติการ deploy และการวิเคราะห์คุณภาพโค้ดที่ผ่านการ deploy
+  - ให้คะแนนโค้ดตามเกณฑ์ต่างๆ (Best Practices, Documentation Compliance, Performance, SEO)
+  - ให้คำแนะนำและ feedback ในการปรับปรุง
+
+- **การแสดงผล**:
+  - ใช้กราฟและสถิติแสดงแนวโน้มคะแนนในแต่ละช่วงเวลา
+  - สามารถกรองข้อมูลตาม environment และ branch ที่เกี่ยวข้อง
+
+## เทคโนโลยีและเครื่องมือที่ใช้
+
+### Next.js (Full-stack Framework)
+
+- **Frontend**:
+  - สร้างหน้า Dashboard และ UI สำหรับแสดงผลข้อมูล
+  - Data Visualization ด้วย ApexCharts.js
+
+- **Backend (API Routes)**:
+  - สร้าง API Routes ที่รับข้อมูลจาก GitHub Webhook
+  - จัดการ logic การประมวลผลและส่งข้อมูลไปยัง Discord
+  - เชื่อมต่อกับ AI API เพื่อวิเคราะห์คุณภาพโค้ด
+
+### Integration และ CI/CD
+- **GitHub Actions / Webhook**: Trigger event เมื่อมีการ deploy หรือ merge โค้ด
+- **Discord Webhook/Bot**: ส่งข้อความแจ้งเตือน
+
+### Tools เสริมอื่นๆ
+- **Static Code Analysis**: ESLint, Prettier
+- **Performance & SEO Analysis**: Google Lighthouse, PageSpeed Insights API
+- **Database**: PostgreSQL/MongoDB
+- **Containerization**: Docker
+
+## แผนการพัฒนา
+
+### Phase 1: Discord Bot
+- พัฒนาระบบแจ้งเตือนผ่าน Discord Bot ขั้นพื้นฐาน
+- รับข้อมูลจาก GitHub Webhook และส่งแจ้งเตือนไปยัง Discord
+
+### Phase 2: Dashboard พื้นฐาน
+- สร้าง UI สำหรับแสดงประวัติการ deploy
+- เชื่อมต่อกับ API Routes เพื่อดึงข้อมูล
+
+### Phase 3: ระบบวิเคราะห์โค้ด
+- เพิ่มการวิเคราะห์คุณภาพโค้ดด้วย static analysis tools
+- แสดงผลการวิเคราะห์ใน Dashboard
+
+### Phase 4: AI Code Review
+- เพิ่มการวิเคราะห์ด้วย AI และให้ feedback
+- ปรับปรุง UI เพื่อแสดงผลการวิเคราะห์อย่างละเอียด
+
+### Phase 5: ขยายฟีเจอร์
+- เชื่อมต่อกับระบบอื่นๆ
+- เพิ่มฟีเจอร์ตามความต้องการเพิ่มเติม
+
+## การติดตั้งและใช้งาน
 
 ```bash
+# ติดตั้ง dependencies
+npm install
+
+# รัน development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# สร้าง production build
+npm run build
+
+# รัน production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ตั้งค่า Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+สร้างไฟล์ `.env.local` และกำหนดค่าต่อไปนี้:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+DISCORD_WEBHOOK_URL=your_discord_webhook_url
+DATABASE_URL=your_database_connection_string
+OPENAI_API_KEY=your_openai_api_key  # ถ้าใช้ AI Code Review
+```
 
-## Learn More
+## การใช้งาน Docker
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# สร้าง Docker image
+docker build -t ai-review-improve .
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# รัน Docker container
+docker run -p 3000:3000 ai-review-improve
+```
