@@ -1,9 +1,10 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
+import Navigator from "@/components/general/Navigator";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'Dashboard - AI Code Review',
-  description: 'ติดตามคุณภาพโค้ดและการ deploy ของโปรเจ็ค',
+  title: "Dashboard - AI Code Review",
+  description: "ติดตามคุณภาพโค้ดและการ deploy ของโปรเจ็ค",
 };
 
 export default function DashboardLayout({
@@ -11,6 +12,11 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const navPages = [
+    { name: "หน้าหลัก", url: "/" },
+    { name: "Dashboard", url: "/overview" },
+    { name: "Ai Assists", url: "/ai-assists" },
+  ];
   return (
     <div className="bg-gray-50">
       <nav className="bg-white shadow-sm">
@@ -18,22 +24,11 @@ export default function DashboardLayout({
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <Link href="/" className="font-bold text-xl text-blue-600">AI Review</Link>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link
-                  href="/"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                >
-                  หน้าหลัก
-                </Link>
-                <Link
-                  href="/overview"
-                  className="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                >
-                  Dashboard
+                <Link href="/" className="font-bold text-xl text-blue-600">
+                  AI Review
                 </Link>
               </div>
+              <Navigator />
             </div>
           </div>
         </div>
