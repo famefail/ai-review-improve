@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Send a request to webhook
       run: |
-        RESPONSE=$(curl -X POST ${{ secrets.WEBHOOK_URL }} \
+        RESPONSE=$(curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
         -H "Content-Type: application/json" \
         -d '{
         "username": "GitHub",
