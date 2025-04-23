@@ -11,7 +11,7 @@ jobs:
       run: |
         RESPONSE=$(curl -H "Content-Type: application/json" -X POST -d '{
         "username": "GitHub",
-        "content": "@everyone",
+        "content": "@Boy",
         "embeds": [
           {
             "type": "rich",
@@ -29,5 +29,5 @@ jobs:
             "url": "https://github.com/***"
           }
         ]
-        }' ${{ secrets.WEBHOOK_URL }})
+        }' ${{ secrets.DISCORD_WEBHOOK_URL }})
         echo "Webhook server response: $RESPONSE"
