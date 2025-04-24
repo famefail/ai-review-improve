@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import DiscordStatus from '@/components/discord/DiscordStatus';
-import Chat from '@/components/chat/Chat';
+import { useEffect, useState } from "react";
+import DiscordStatus from "@/components/discord/DiscordStatus";
+import Chat from "@/components/chat/Chat";
 
 // ประเภทข้อมูลสำหรับ Deployment
 interface Deployment {
@@ -33,14 +33,14 @@ export default function DashboardOverview() {
     // ดึงข้อมูล deployments จาก API
     const fetchDeployments = async () => {
       try {
-        const response = await fetch('/api/deployments');
+        const response = await fetch("/api/deployments");
         if (!response.ok) {
-          throw new Error('ไม่สามารถดึงข้อมูล deployments ได้');
+          throw new Error("ไม่สามารถดึงข้อมูล deployments ได้");
         }
         const data = await response.json();
         setDeployments(data.deployments);
       } catch (err) {
-        setError('เกิดข้อผิดพลาดในการดึงข้อมูล: ' + (err as Error).message);
+        setError("เกิดข้อผิดพลาดในการดึงข้อมูล: " + (err as Error).message);
       } finally {
         setLoading(false);
       }
@@ -51,21 +51,21 @@ export default function DashboardOverview() {
 
   // ฟังก์ชันสำหรับแสดงวันที่ในรูปแบบที่อ่านง่าย
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('th-TH', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleString("th-TH", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   // ฟังก์ชันสำหรับแสดงสีตามคะแนน
   const getScoreColor = (score?: number) => {
-    if (!score) return 'bg-gray-200';
-    if (score >= 80) return 'bg-green-500';
-    if (score >= 60) return 'bg-yellow-500';
-    return 'bg-red-500';
+    if (!score) return "bg-gray-200";
+    if (score >= 80) return "bg-green-500";
+    if (score >= 60) return "bg-yellow-500";
+    return "bg-red-500";
   };
 
   return (
@@ -74,7 +74,9 @@ export default function DashboardOverview() {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Dashboard ติดตามคุณภาพโค้ด</h1>
         </div>
-        <p className="text-gray-600 mt-2">ติดตามการ deploy และคุณภาพโค้ดของโปรเจ็ค</p>
+        <p className="text-gray-600 mt-2">
+          ติดตามการ deploy และคุณภาพโค้ดของโปรเจ็ค
+        </p>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -100,11 +102,18 @@ export default function DashboardOverview() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="border border-gray-200 rounded-md p-4 hover:shadow-md transition-shadow">
                   <h3 className="font-medium mb-2">🤖 Discord Bot แจ้งเตือน</h3>
-                  <p className="text-gray-600 text-sm">รับแจ้งเตือนจาก GitHub เมื่อมีการ deploy หรือ merge โค้ด และส่งข้อความแจ้งเตือนใน Discord channel</p>
+                  <p className="text-gray-600 text-sm">
+                    รับแจ้งเตือนจาก GitHub เมื่อมีการ deploy หรือ merge โค้ด
+                    และส่งข้อความแจ้งเตือนใน Discord channel
+                  </p>
                 </div>
                 <div className="border border-gray-200 rounded-md p-4 hover:shadow-md transition-shadow">
-                  <h3 className="font-medium mb-2">📊 Dashboard ติดตามคุณภาพโค้ด</h3>
-                  <p className="text-gray-600 text-sm">แสดงประวัติการ deploy และการวิเคราะห์คุณภาพโค้ดตามเกณฑ์ต่างๆ</p>
+                  <h3 className="font-medium mb-2">
+                    📊 Dashboard ติดตามคุณภาพโค้ด
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    แสดงประวัติการ deploy และการวิเคราะห์คุณภาพโค้ดตามเกณฑ์ต่างๆ
+                  </p>
                 </div>
               </div>
             </div>
@@ -156,7 +165,12 @@ export default function DashboardOverview() {
                     <tr key={deployment.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                          <a href={deployment.repositoryUrl} target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">
+                          <a
+                            href={deployment.repositoryUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-blue-500"
+                          >
                             {deployment.projectName}
                           </a>
                         </div>
@@ -170,7 +184,12 @@ export default function DashboardOverview() {
                         {deployment.deployedBy}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <a href={deployment.commitUrl} target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 truncate block max-w-xs">
+                        <a
+                          href={deployment.commitUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-blue-500 truncate block max-w-xs"
+                        >
                           {deployment.commitMessage}
                         </a>
                       </td>
@@ -180,7 +199,11 @@ export default function DashboardOverview() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         {deployment.scores?.overall ? (
                           <div className="flex items-center">
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${getScoreColor(deployment.scores.overall)}`}>
+                            <div
+                              className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${getScoreColor(
+                                deployment.scores.overall
+                              )}`}
+                            >
                               {deployment.scores.overall}
                             </div>
                           </div>
@@ -202,38 +225,86 @@ export default function DashboardOverview() {
                 <h2 className="text-xl font-semibold">รายละเอียดคะแนนล่าสุด</h2>
               </div>
               <div className="p-6">
-                <h3 className="font-medium text-lg mb-4">{deployments[0].projectName} ({deployments[0].branch})</h3>
-                
+                <h3 className="font-medium text-lg mb-4">
+                  {deployments[0].projectName} ({deployments[0].branch})
+                </h3>
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm text-gray-500 mb-1">Best Practices</div>
-                    <div className={`text-2xl font-bold ${deployments[0].scores.bestPractices && deployments[0].scores.bestPractices >= 80 ? 'text-green-600' : deployments[0].scores.bestPractices && deployments[0].scores.bestPractices >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {deployments[0].scores.bestPractices || 'N/A'}
+                    <div className="text-sm text-gray-500 mb-1">
+                      Best Practices
+                    </div>
+                    <div
+                      className={`text-2xl font-bold ${
+                        deployments[0].scores.bestPractices &&
+                        deployments[0].scores.bestPractices >= 80
+                          ? "text-green-600"
+                          : deployments[0].scores.bestPractices &&
+                            deployments[0].scores.bestPractices >= 60
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {deployments[0].scores.bestPractices || "N/A"}
                     </div>
                   </div>
-                  
+
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm text-gray-500 mb-1">Documentation</div>
-                    <div className={`text-2xl font-bold ${deployments[0].scores.documentation && deployments[0].scores.documentation >= 80 ? 'text-green-600' : deployments[0].scores.documentation && deployments[0].scores.documentation >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {deployments[0].scores.documentation || 'N/A'}
+                    <div className="text-sm text-gray-500 mb-1">
+                      Documentation
+                    </div>
+                    <div
+                      className={`text-2xl font-bold ${
+                        deployments[0].scores.documentation &&
+                        deployments[0].scores.documentation >= 80
+                          ? "text-green-600"
+                          : deployments[0].scores.documentation &&
+                            deployments[0].scores.documentation >= 60
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {deployments[0].scores.documentation || "N/A"}
                     </div>
                   </div>
-                  
+
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm text-gray-500 mb-1">Performance</div>
-                    <div className={`text-2xl font-bold ${deployments[0].scores.performance && deployments[0].scores.performance >= 80 ? 'text-green-600' : deployments[0].scores.performance && deployments[0].scores.performance >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {deployments[0].scores.performance || 'N/A'}
+                    <div className="text-sm text-gray-500 mb-1">
+                      Performance
+                    </div>
+                    <div
+                      className={`text-2xl font-bold ${
+                        deployments[0].scores.performance &&
+                        deployments[0].scores.performance >= 80
+                          ? "text-green-600"
+                          : deployments[0].scores.performance &&
+                            deployments[0].scores.performance >= 60
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {deployments[0].scores.performance || "N/A"}
                     </div>
                   </div>
-                  
+
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <div className="text-sm text-gray-500 mb-1">SEO</div>
-                    <div className={`text-2xl font-bold ${deployments[0].scores.seo && deployments[0].scores.seo >= 80 ? 'text-green-600' : deployments[0].scores.seo && deployments[0].scores.seo >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {deployments[0].scores.seo || 'N/A'}
+                    <div
+                      className={`text-2xl font-bold ${
+                        deployments[0].scores.seo &&
+                        deployments[0].scores.seo >= 80
+                          ? "text-green-600"
+                          : deployments[0].scores.seo &&
+                            deployments[0].scores.seo >= 60
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {deployments[0].scores.seo || "N/A"}
                     </div>
                   </div>
                 </div>
-                
+
                 {deployments[0].feedback && (
                   <div className="mt-4">
                     <h4 className="font-medium mb-2">ข้อเสนอแนะ:</h4>
@@ -247,16 +318,6 @@ export default function DashboardOverview() {
           )}
         </div>
       )}
-
-      {/* ส่วน AI Assistant */}
-      <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
-        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-          <h2 className="text-xl font-semibold">AI Code Review Assistant</h2>
-        </div>
-        <div className="p-6">
-          <Chat />
-        </div>
-      </div>
     </div>
   );
 }

@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import classNames from "classnames";
 const Navigator = () => {
   const path = usePathname();
-  console.log(path);
   const navPages = [
     { name: "หน้าหลัก", url: "/" },
     { name: "Dashboard", url: "/overview" },
-    { name: "Ai Assists", url: "/ai-assists" },
+    { name: "AI Assists", url: "/ai-assists" },
   ];
   return (
     <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
@@ -19,7 +18,10 @@ const Navigator = () => {
           <Link
             key={key}
             href={page.url}
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className={classNames(
+              path === page.url ? "border-blue-500" : "border-transparent",
+              "text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            )}
           >
             {page.name}
           </Link>

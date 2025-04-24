@@ -1,5 +1,10 @@
 {
-  "conventionalCommits.scopes": ["api", "compoenents", "dashboard"],
+  "conventionalCommits.scopes": [
+    "api",
+    "compoenents",
+    "dashboard",
+    "dependencies"
+  ],
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
