@@ -1,0 +1,13 @@
+{
+  "conventionalCommits.scopes": [
+    "api",
+    "compoenents",
+    "dashboard",
+    "dependencies",
+    "webhook"
+  ],
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}
