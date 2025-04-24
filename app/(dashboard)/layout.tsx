@@ -12,11 +12,6 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const navPages = [
-    { name: "หน้าหลัก", url: "/" },
-    { name: "Dashboard", url: "/overview" },
-    { name: "Ai Assists", url: "/ai-assists" },
-  ];
   return (
     <div className="bg-gray-50">
       <nav className="bg-white shadow-sm">
