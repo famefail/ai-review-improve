@@ -1,5 +1,4 @@
-import { sendDiscordEmbed, sendToDiscord } from "@/utils/discord";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 // ฟังก์ชันสำหรับทดสอบการส่งข้อความไปยัง Discord
 export async function GET(request: NextRequest) {

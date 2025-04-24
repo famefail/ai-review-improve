@@ -44,7 +44,7 @@ export const sendToDiscord = async (message: string) => {
 };
 
 // ฟังก์ชันส่งข้อความแบบ rich embed ไปยัง Discord
-export const sendDiscordEmbed = async (embeds: Promise<DiscordEmbed[]>) => {
+export const sendDiscordEmbed = async (embeds: DiscordEmbed[]) => {
   try {
     // ตรวจสอบว่ามีการตั้งค่า webhook ID และ token หรือไม่
     if (
