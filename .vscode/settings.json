@@ -3,7 +3,8 @@
     "api",
     "compoenents",
     "dashboard",
-    "dependencies"
+    "dependencies",
+    "webhook"
   ],
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "editor.codeActionsOnSave": {
