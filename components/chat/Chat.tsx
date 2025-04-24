@@ -12,28 +12,28 @@ const Chat = () => {
 
   const sendPrompt = async () => {
     if (!prompt.trim()) return;
-    
+
     setIsLoading(true);
-    
+
     try {
       // เรียกใช้ API จากหลาย model พร้อมกัน
       const [geminiRes, claudeRes] = await Promise.all([
         fetch("/api/integrations/gemini", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt }),
+          body: JSON.stringify({ prompt, models: "gemini-2.0-flash" }),
         }).then((res) => res.json()),
 
-        fetch("/api/integrations/claude", {
+        fetch("/api/integrations/gemini", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt }),
+          body: JSON.stringify({ prompt, models: "gemini-1.5-flash" }),
         }).then((res) => res.json()),
       ]);
 
       setGeminiData(geminiRes.result);
       setClaudeData(claudeRes.result);
-      
+
       // สร้างสรุปจากทั้งสอง model
       await onSummaryData(claudeRes.result, geminiRes.result);
     } catch (error) {
@@ -49,7 +49,8 @@ const Chat = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: `สรุป "${prompt}" \n${article1} และ \n${article2}`,
+          prompt: `สรุป "${prompt}" \nบทความแรก ${article1}\n และ \nบทความสอง${article2} และอกทิ้งท้ายด้วยว่าบทความไหนมีประโยชน์มากกว่า เพราะอะไรและแทนที่คำว่าบทความด้วยคำว่า โมเดล`,
+          models: "gemini-1.5-pro",
         }),
       });
 
@@ -73,7 +74,7 @@ const Chat = () => {
         <h2 className="text-xl font-semibold mb-4 text-blue-700">
           💡 AI Code Review Assistant
         </h2>
-        
+
         <div className="flex gap-4 items-end">
           <div className="flex-1 relative">
             <textarea
