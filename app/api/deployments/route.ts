@@ -63,6 +63,7 @@ const mockDeployments: Deployment[] = [
 // GET: ดึงข้อมูล deployments ทั้งหมด
 export async function GET(request: NextRequest) {
   console.log(request);
+
   // ในอนาคตจะดึงข้อมูลจากฐานข้อมูลจริง
   return NextResponse.json({ deployments: mockDeployments });
 }
@@ -85,9 +86,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, deployment: newDeployment });
   } catch (error) {
     console.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล deployment:", error);
+
     return NextResponse.json(
       { error: "เกิดข้อผิดพลาดในการบันทึกข้อมูล" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -103,7 +105,7 @@ export async function PUT(request: NextRequest) {
     if (deploymentIndex === -1) {
       return NextResponse.json(
         { error: "ไม่พบข้อมูล deployment ที่ต้องการอัปเดต" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -120,9 +122,10 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     console.error("เกิดข้อผิดพลาดในการอัปเดตข้อมูล deployment:", error);
+
     return NextResponse.json(
       { error: "เกิดข้อผิดพลาดในการอัปเดตข้อมูล" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

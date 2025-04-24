@@ -7,6 +7,7 @@
 ### A. Discord Bot สำหรับแจ้งเตือน Deployment
 
 - **ฟังก์ชันหลัก**:
+
   - รับแจ้งเตือนจาก GitHub (ผ่าน Webhook หรือ GitHub Actions) เมื่อมีการ deploy หรือ merge โค้ด
   - ตรวจสอบว่า event มาจาก branch ที่กำหนด (เฉพาะ main และ develop) เท่านั้น
   - ส่งข้อความแจ้งเตือนใน Discord channel พร้อมรายละเอียด เช่น ชื่อโปรเจ็ค, Branch ที่ deploy, ชื่อคน deploy, รายละเอียด commit
@@ -17,6 +18,7 @@
 ### B. Dashboard สำหรับติดตามและวิเคราะห์คุณภาพโค้ด
 
 - **ฟังก์ชันหลัก**:
+
   - แสดงประวัติการ deploy และการวิเคราะห์คุณภาพโค้ดที่ผ่านการ deploy
   - ให้คะแนนโค้ดตามเกณฑ์ต่างๆ (Best Practices, Documentation Compliance, Performance, SEO)
   - ให้คำแนะนำและ feedback ในการปรับปรุง
@@ -30,6 +32,7 @@
 ### Next.js (Full-stack Framework)
 
 - **Frontend**:
+
   - สร้างหน้า Dashboard และ UI สำหรับแสดงผลข้อมูล
   - Data Visualization ด้วย ApexCharts.js
 
@@ -39,10 +42,12 @@
   - เชื่อมต่อกับ AI API เพื่อวิเคราะห์คุณภาพโค้ด
 
 ### Integration และ CI/CD
+
 - **GitHub Actions / Webhook**: Trigger event เมื่อมีการ deploy หรือ merge โค้ด
 - **Discord Webhook/Bot**: ส่งข้อความแจ้งเตือน
 
 ### Tools เสริมอื่นๆ
+
 - **Static Code Analysis**: ESLint, Prettier
 - **Performance & SEO Analysis**: Google Lighthouse, PageSpeed Insights API
 - **Database**: PostgreSQL/MongoDB
@@ -51,22 +56,27 @@
 ## แผนการพัฒนา
 
 ### Phase 1: Discord Bot
+
 - พัฒนาระบบแจ้งเตือนผ่าน Discord Bot ขั้นพื้นฐาน
 - รับข้อมูลจาก GitHub Webhook และส่งแจ้งเตือนไปยัง Discord
 
 ### Phase 2: Dashboard พื้นฐาน
+
 - สร้าง UI สำหรับแสดงประวัติการ deploy
 - เชื่อมต่อกับ API Routes เพื่อดึงข้อมูล
 
 ### Phase 3: ระบบวิเคราะห์โค้ด
+
 - เพิ่มการวิเคราะห์คุณภาพโค้ดด้วย static analysis tools
 - แสดงผลการวิเคราะห์ใน Dashboard
 
 ### Phase 4: AI Code Review
+
 - เพิ่มการวิเคราะห์ด้วย AI และให้ feedback
 - ปรับปรุง UI เพื่อแสดงผลการวิเคราะห์อย่างละเอียด
 
 ### Phase 5: ขยายฟีเจอร์
+
 - เชื่อมต่อกับระบบอื่นๆ
 - เพิ่มฟีเจอร์ตามความต้องการเพิ่มเติม
 

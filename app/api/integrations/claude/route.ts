@@ -16,20 +16,24 @@ export async function POST(req: Request) {
 
     if (!res.ok) {
       const errorText = await res.text();
+
       console.error("Claude API Error:", errorText);
+
       return Response.json(
         { error: "Claude API error", detail: errorText },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     const data = await res.json();
+
     return Response.json({ result: data.choices[0].message.content });
   } catch (err) {
     console.error("Internal Error:", err);
+
     return Response.json(
       { error: "Internal Server Error", detail: err },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

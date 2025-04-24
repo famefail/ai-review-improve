@@ -2,7 +2,7 @@ interface DiscordEmbed {
   title?: string;
   description?: string;
   url?: string;
-  color?: number; // สีของ embed (เป็นเลขฐาน 10)
+  color?: number;
   timestamp?: string;
   footer?: {
     text: string;

@@ -14,6 +14,7 @@ export const POST = async (req: Request) => {
   });
 
   console.log(response.output_text);
+
   return NextResponse.json({
     success: true,
     message: "ส่งข้อความไปยัง Discord สำเร็จ",
