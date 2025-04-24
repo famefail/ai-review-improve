@@ -5,7 +5,8 @@ const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL!;
 export async function POST(req: NextRequest) {
   const event = req.headers.get("x-github-event");
   const payload = await req.json();
-
+  console.log("event", event);
+  console.log("payload", payload);
   if (event === "push") {
     const repo = payload.repository.full_name;
     const pusher = payload.pusher.name;
