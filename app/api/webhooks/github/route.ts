@@ -46,7 +46,7 @@ function isTargetBranch(ref?: string): boolean {
 
 // ฟังก์ชันสร้าง Discord Embed สำหรับส่งไปยัง Discord
 
-function createDiscordEmbed(payload: GitHubPayload) {
+async function createDiscordEmbed(payload: GitHubPayload) {
   const { repository, sender, head_commit, commits, ref } = payload;
 
   if (!repository || !sender) {
@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
     console.log(`ได้รับ webhook จาก branch ที่ต้องการ: ${payload.ref}`);
 
     // สร้าง embed และส่งไปยัง Discord
-    const embeds = createDiscordEmbed(payload);
+    const embeds = await createDiscordEmbed(payload);
     console.log(
       "กำลังส่งข้อความไปยัง Discord:",
       JSON.stringify(embeds, null, 2)
