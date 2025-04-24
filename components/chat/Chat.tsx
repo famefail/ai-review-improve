@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import AnswerBlock from "@/components/chat/AnswerBlock";
 
 const Chat = () => {
@@ -55,6 +56,7 @@ const Chat = () => {
       });
 
       const sumRes = await res.json();
+
       setSummaryData(sumRes.result);
     } catch (error) {
       console.error("เกิดข้อผิดพลาดในการสร้างสรุป:", error);
@@ -81,11 +83,11 @@ const Chat = () => {
               className="w-full min-h-[100px] p-3 bg-gray-50 border border-gray-200 rounded-lg
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                       font-mono resize-none"
+              disabled={isLoading}
               placeholder="พิมพ์คำถามหรือโค้ดที่ต้องการตรวจสอบ..."
               value={prompt}
-              onKeyDown={handleKeyDown}
               onChange={(e) => setPrompt(e.target.value)}
-              disabled={isLoading}
+              onKeyDown={handleKeyDown}
             />
           </div>
 
@@ -105,9 +107,9 @@ const Chat = () => {
         {summaryData && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <AnswerBlock
+              data={summaryData}
               isLoading={isLoading}
               title="สรุปผลการวิเคราะห์"
-              data={summaryData}
             />
           </div>
         )}
@@ -116,16 +118,16 @@ const Chat = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <AnswerBlock
+                data={geminiData}
                 isLoading={isLoading}
                 title="Gemini Analysis"
-                data={geminiData}
               />
             </div>
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <AnswerBlock
+                data={claudeData}
                 isLoading={isLoading}
                 title="Claude Analysis"
-                data={claudeData}
               />
             </div>
           </div>
@@ -134,9 +136,9 @@ const Chat = () => {
         {!summaryData && !isLoading && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 text-center">
             <AnswerBlock
+              data="🤖 พิมพ์โค้ดหรือคำถามแล้วกด 'วิเคราะห์' เพื่อตรวจสอบ"
               isLoading={isLoading}
               title=""
-              data="🤖 พิมพ์โค้ดหรือคำถามแล้วกด 'วิเคราะห์' เพื่อตรวจสอบ"
             />
           </div>
         )}

@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
           message:
             "กรุณาตั้งค่า NEXT_PUBLIC_DISCORD_ID และ NEXT_PUBLIC_DISCORD_TOKEN ใน .env.local",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
           message: "ไม่สามารถเชื่อมต่อกับ Discord webhook ได้",
           status: response.status,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -48,13 +48,14 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("เกิดข้อผิดพลาดในการตรวจสอบ Discord webhook:", error);
+
     return NextResponse.json(
       {
         success: false,
         error: "เกิดข้อผิดพลาดในการตรวจสอบ Discord webhook",
         message: (error as Error).message,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

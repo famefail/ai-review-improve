@@ -29,7 +29,7 @@ interface CodeAnalysisResult {
 function analyzeCode(
   codeSnippet?: string,
   repositoryUrl?: string,
-  branch?: string
+  branch?: string,
 ): CodeAnalysisResult {
   // ในระบบจริงจะส่งข้อมูลไปยัง AI API เพื่อวิเคราะห์
   // สำหรับตอนนี้ใช้การสุ่มคะแนนเพื่อการทดสอบ
@@ -43,7 +43,7 @@ function analyzeCode(
 
   // คำนวณคะแนนรวม
   const overall = Math.floor(
-    (bestPractices + documentation + performance + seo) / 4
+    (bestPractices + documentation + performance + seo) / 4,
   );
 
   // สร้างข้อเสนอแนะจำลอง
@@ -70,6 +70,7 @@ function analyzeCode(
 
   // สร้าง feedback ตามคะแนน
   let feedback = "";
+
   if (overall >= 90) {
     feedback = "โค้ดมีคุณภาพดีมาก เป็นไปตาม best practices และมีประสิทธิภาพสูง";
   } else if (overall >= 80) {
@@ -107,7 +108,7 @@ export async function POST(request: NextRequest) {
     if (!deploymentId) {
       return NextResponse.json(
         { error: "ต้องระบุ deploymentId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -136,9 +137,10 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("เกิดข้อผิดพลาดในการวิเคราะห์โค้ด:", error);
+
     return NextResponse.json(
       { error: "เกิดข้อผิดพลาดในการวิเคราะห์โค้ด" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

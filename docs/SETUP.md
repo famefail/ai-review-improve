@@ -12,6 +12,7 @@ NEXT_PUBLIC_DISCORD_TOKEN=your_discord_webhook_token
 ```
 
 คุณสามารถสร้าง Discord Webhook ได้โดย:
+
 1. เข้าไปที่ Server Settings ใน Discord
 2. เลือก Integrations > Webhooks
 3. คลิก "New Webhook"

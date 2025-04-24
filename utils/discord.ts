@@ -18,7 +18,7 @@ export const sendToDiscord = async (message: string) => {
     console.log(
       `กำลังส่งข้อความไปยัง Discord: ${message.substring(0, 50)}${
         message.length > 50 ? "..." : ""
-      }`
+      }`,
     );
 
     const response = await fetch(webhookURL, {
@@ -30,7 +30,7 @@ export const sendToDiscord = async (message: string) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error(
-        `การส่งข้อความไปยัง Discord ล้มเหลว: ${response.status} ${errorText}`
+        `การส่งข้อความไปยัง Discord ล้มเหลว: ${response.status} ${errorText}`,
       );
       throw new Error(`การส่งข้อความไปยัง Discord ล้มเหลว: ${response.status}`);
     }
@@ -59,8 +59,8 @@ export const sendDiscordEmbed = async (embeds: DiscordEmbed[]) => {
     console.log(
       `กำลังส่ง embed ไปยัง Discord: ${JSON.stringify(embeds).substring(
         0,
-        100
-      )}...`
+        100,
+      )}...`,
     );
 
     const response = await fetch(webhookURL, {
@@ -72,7 +72,7 @@ export const sendDiscordEmbed = async (embeds: DiscordEmbed[]) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error(
-        `การส่ง embed ไปยัง Discord ล้มเหลว: ${response.status} ${errorText}`
+        `การส่ง embed ไปยัง Discord ล้มเหลว: ${response.status} ${errorText}`,
       );
       throw new Error(`การส่ง embed ไปยัง Discord ล้มเหลว: ${response.status}`);
     }
@@ -88,7 +88,7 @@ export const sendDiscordEmbed = async (embeds: DiscordEmbed[]) => {
 // ฟังก์ชันส่งข้อความพร้อม embed ไปยัง Discord
 export const sendDiscordMessageWithEmbed = async (
   content: string,
-  embeds: DiscordEmbed[]
+  embeds: DiscordEmbed[],
 ) => {
   const webhookURL = `https://discord.com/api/webhooks/${process.env.NEXT_PUBLIC_DISCORD_ID}/${process.env.NEXT_PUBLIC_DISCORD_TOKEN}`;
 
@@ -113,7 +113,7 @@ export async function isTargetBranch(ref?: string) {
 // ฟังก์ชันสร้าง Discord Embed สำหรับส่งไปยัง Discord
 
 export async function createDiscordEmbed(
-  payload: GitHubPayload
+  payload: GitHubPayload,
 ): Promise<DiscordEmbed[]> {
   const { repository, sender, head_commit, commits, ref } = payload;
 
@@ -163,7 +163,7 @@ export async function createDiscordEmbed(
           ? new Date(commit.timestamp).toLocaleString("th-TH")
           : "ไม่ระบุ",
         inline: false,
-      }
+      },
     );
   }
 
