@@ -25,10 +25,10 @@ export async function POST(req: Request) {
 
     const data = await res.json();
     return Response.json({ result: data.choices[0].message.content });
-  } catch (err: any) {
+  } catch (err) {
     console.error("Internal Error:", err);
     return Response.json(
-      { error: "Internal Server Error", detail: err.message },
+      { error: "Internal Server Error", detail: err },
       { status: 500 }
     );
   }

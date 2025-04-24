@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import DiscordStatus from "@/components/discord/DiscordStatus";
-import Chat from "@/components/chat/Chat";
 
 // ประเภทข้อมูลสำหรับ Deployment
 interface Deployment {
