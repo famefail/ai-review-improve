@@ -51,7 +51,7 @@ export default function DashboardOverview() {
     <div className="min-h-screen p-8">
       <DashboardHeader />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <ConnectionStatus />
         <FeaturesOverview />
       </div>

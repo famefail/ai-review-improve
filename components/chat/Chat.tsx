@@ -82,7 +82,7 @@ const Chat = () => {
             <textarea
               className="w-full min-h-[100px] p-3 bg-gray-50 border border-gray-200 rounded-lg
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                      font-mono resize-none"
+                      font-mono resize-none text-black"
               disabled={isLoading}
               placeholder="พิมพ์คำถามหรือโค้ดที่ต้องการตรวจสอบ..."
               value={prompt}
@@ -109,7 +109,7 @@ const Chat = () => {
             <AnswerBlock
               data={summaryData}
               isLoading={isLoading}
-              title="สรุปผลการวิเคราะห์"
+              title="สรุปผลการวิเคราะห์ จาก gemini-1.5-pro"
             />
           </div>
         )}
@@ -120,14 +120,14 @@ const Chat = () => {
               <AnswerBlock
                 data={geminiData}
                 isLoading={isLoading}
-                title="Gemini Analysis"
+                title="Gemini-2.0-flash Analysis"
               />
             </div>
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <AnswerBlock
                 data={claudeData}
                 isLoading={isLoading}
-                title="Claude Analysis"
+                title="Gemini-2.0-flash Analysis"
               />
             </div>
           </div>
