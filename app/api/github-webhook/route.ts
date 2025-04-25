@@ -1,5 +1,6 @@
-import { createDiscordEmbed, sendDiscordEmbed } from "@/utils/discord";
 import { NextRequest, NextResponse } from "next/server";
+
+import { createDiscordEmbed, sendDiscordEmbed } from "@/utils/discord";
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,6 +26,7 @@ export async function POST(request: NextRequest) {
       const branchName = ref ? ref.replace("refs/heads/", "") : "ไม่ระบุ";
       const commit =
         head_commit || (commits && commits.length > 0 ? commits[0] : null);
+
       if (repository && sender && commit) {
         console.log("กำลังบันทึกข้อมูล deployment");
         // ใช้ absolute URL สำหรับการเรียก API ภายใน
@@ -40,16 +42,17 @@ export async function POST(request: NextRequest) {
             repositoryUrl: repository.html_url,
           }),
         });
+
         if (!deploymentResponse.ok) {
           throw new Error(
-            `การบันทึกข้อมูล deployment ล้มเหลว: ${deploymentResponse.status}`
+            `การบันทึกข้อมูล deployment ล้มเหลว: ${deploymentResponse.status}`,
           );
         }
       }
     } catch (deploymentError) {
       console.error(
         "เกิดข้อผิดพลาดในการบันทึกข้อมูล deployment:",
-        deploymentError
+        deploymentError,
       );
       // ไม่ return error เพื่อให้การส่งข้อความไปยัง Discord สำเร็จ
     }
@@ -62,7 +65,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: `เกิดข้อผิดพลาดในการประมวลผล webhook ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

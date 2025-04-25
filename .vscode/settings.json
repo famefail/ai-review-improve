@@ -9,5 +9,6 @@
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }
+  },
+  "vs-code-prettier-eslint.prettierLast": false
 }

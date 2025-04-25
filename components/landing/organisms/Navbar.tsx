@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
 import Logo from "../atoms/Logo";
 import NavItem from "../molecules/NavItem";
 
@@ -19,6 +20,7 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -48,12 +50,12 @@ export default function Navbar() {
 
         <div className="flex space-x-3">
           <Link
-            href="/overview"
             className={`transition-colors ${
               isScrolled
                 ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-white text-blue-700 hover:bg-blue-50"
             } px-4 py-2 rounded-md font-medium`}
+            href="/overview"
           >
             เข้าใช้งานระบบ
           </Link>

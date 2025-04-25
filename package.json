@@ -6,13 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "type-check": "tsc --noEmit",
+    "check": "npm run type-check && npm run lint"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
     "classnames": "^2.5.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.6",
     "next": "15.3.0",
     "openai": "^4.95.1",
+    "prettier": "^3.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

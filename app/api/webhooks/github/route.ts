@@ -1,5 +1,6 @@
-import { sendDiscordEmbed } from "@/utils/discord";
 import { NextRequest, NextResponse } from "next/server";
+
+import { sendDiscordEmbed } from "@/utils/discord";
 
 // ประเภทข้อมูลสำหรับ GitHub webhook payload
 interface GitHubPayload {
@@ -39,6 +40,7 @@ function isTargetBranch(ref?: string): boolean {
 
   // รูปแบบของ ref จะเป็น "refs/heads/branch_name"
   const branchName = ref.replace("refs/heads/", "");
+
   return (
     branchName === "main" || branchName === "develop" || branchName === "master"
   );
@@ -95,12 +97,13 @@ async function createDiscordEmbed(payload: GitHubPayload) {
           ? new Date(commit.timestamp).toLocaleString("th-TH")
           : "ไม่ระบุ",
         inline: false,
-      }
+      },
     );
   }
 
   // กำหนดสีตาม branch
   let color = 5814783; // สีฟ้า (ค่าเริ่มต้น)
+
   if (branchName === "main" || branchName === "master") {
     color = 5763719; // สีเขียว
   } else if (branchName === "develop") {
@@ -130,17 +133,19 @@ async function createDiscordEmbed(payload: GitHubPayload) {
 export async function POST(request: NextRequest) {
   try {
     const payload: GitHubPayload = await request.json();
+
     console.log(
       "ได้รับ GitHub webhook payload:",
-      JSON.stringify(payload, null, 2)
+      JSON.stringify(payload, null, 2),
     );
 
     // ตรวจสอบว่าเป็น branch ที่ต้องการหรือไม่
     if (!isTargetBranch(payload.ref)) {
       console.log(`ไม่ใช่ branch ที่ต้องการ: ${payload.ref}`);
+
       return NextResponse.json(
         { message: "ไม่ใช่ branch ที่ต้องการ (main หรือ develop)" },
-        { status: 200 }
+        { status: 200 },
       );
     }
 
@@ -148,9 +153,10 @@ export async function POST(request: NextRequest) {
 
     // สร้าง embed และส่งไปยัง Discord
     const embeds = await createDiscordEmbed(payload);
+
     console.log(
       "กำลังส่งข้อความไปยัง Discord:",
-      JSON.stringify(embeds, null, 2)
+      JSON.stringify(embeds, null, 2),
     );
 
     await sendDiscordEmbed(embeds);
@@ -180,12 +186,12 @@ export async function POST(request: NextRequest) {
               commitUrl: commit.url,
               repositoryUrl: repository.html_url,
             }),
-          }
+          },
         );
 
         if (!deploymentResponse.ok) {
           throw new Error(
-            `การบันทึกข้อมูล deployment ล้มเหลว: ${deploymentResponse.status}`
+            `การบันทึกข้อมูล deployment ล้มเหลว: ${deploymentResponse.status}`,
           );
         }
 
@@ -194,7 +200,7 @@ export async function POST(request: NextRequest) {
     } catch (deploymentError) {
       console.error(
         "เกิดข้อผิดพลาดในการบันทึกข้อมูล deployment:",
-        deploymentError
+        deploymentError,
       );
       // ไม่ return error เพื่อให้การส่งข้อความไปยัง Discord สำเร็จ
     }
@@ -205,9 +211,10 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("เกิดข้อผิดพลาดในการประมวลผล webhook:", error);
+
     return NextResponse.json(
       { error: "เกิดข้อผิดพลาดในการประมวลผล webhook" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
