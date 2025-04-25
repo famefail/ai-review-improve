@@ -1,67 +1,48 @@
+import Link from "next/link";
+
 import { useTheme } from "@/contexts/ThemeContext";
 
-import FeatureCard from "../molecules/FeatureCard";
-
-export default function FeaturesOverview() {
+export default function DashboardHeader() {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  const features = [
-    {
-      id: "discord-bot",
-      icon: "🤖",
-      title: "Discord Bot แจ้งเตือน",
-      description:
-        "รับแจ้งเตือนจาก GitHub เมื่อมีการ deploy หรือ merge โค้ด และส่งข้อความแจ้งเตือนใน Discord channel",
-      color: "from-purple-500 to-indigo-600",
-    },
-    {
-      id: "dashboard-overview",
-      icon: "📊",
-      title: "Dashboard ติดตามคุณภาพโค้ด",
-      description:
-        "แสดงประวัติการ deploy และการวิเคราะห์คุณภาพโค้ดตามเกณฑ์ต่างๆ",
-      color: "from-blue-500 to-cyan-600",
-    },
-  ];
-
   return (
-    <div className="relative group">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300" />
-      <div
-        className={`relative ${
-          isDark ? "bg-gray-800/90" : "bg-white/90"
-        } backdrop-blur-lg rounded-xl shadow-lg overflow-hidden`}
-      >
-        <div
-          className={`px-4 sm:px-6 py-4 border-b ${
-            isDark
-              ? "border-gray-700 bg-gradient-to-r from-purple-900/50 to-blue-900/50"
-              : "border-gray-100 bg-gradient-to-r from-purple-50 to-blue-50"
-          }`}
-        >
-          <h2
-            className={`text-lg sm:text-xl font-semibold ${
-              isDark ? "text-white" : "text-gray-900"
-            }`}
+    <header className="relative">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className={isDark ? "text-white" : "text-gray-900"}>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
+            AI Code Review Dashboard
+          </h1>
+          <p
+            className={`mt-2 text-base sm:text-lg ${isDark ? "text-blue-100" : "text-gray-600"}`}
           >
-            ฟีเจอร์หลัก
-          </h2>
+            ภาพรวมระบบตรวจสอบคุณภาพโค้ด
+          </p>
         </div>
-        <div className="p-4 sm:p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            {features.map((feature) => (
-              <FeatureCard
-                key={feature.id}
-                color={feature.color}
-                description={feature.description}
-                icon={feature.icon}
-                title={feature.title}
-              />
-            ))}
-          </div>
-        </div>
+        <Link
+          className={`group flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 ${
+            isDark
+              ? "bg-white/10 hover:bg-white/20 text-white border-white/20"
+              : "bg-white/80 hover:bg-white text-gray-700 border-gray-200"
+          } rounded-lg transition-all duration-300 hover:scale-105 border backdrop-blur-md`}
+          href="/"
+        >
+          <svg
+            className="w-5 h-5 transition-transform group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+            />
+          </svg>
+          กลับหน้าหลัก
+        </Link>
       </div>
-    </div>
+    </header>
   );
 }

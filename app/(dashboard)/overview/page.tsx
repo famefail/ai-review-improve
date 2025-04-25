@@ -72,6 +72,11 @@ export default function DashboardOverview() {
       </div>
 
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Features Overview Section */}
+        <div className="mb-6 sm:mb-8">
+          <FeaturesOverview />
+        </div>
+
         {/* Statistics Cards Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Stat cards */}
@@ -270,13 +275,25 @@ export default function DashboardOverview() {
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
-          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
-            <FeaturesOverview />
-
-            {/* Latest Deployment Card */}
+          <div className="lg:col-span-2">
+            {/* Latest Scores Section */}
             {deployments.length > 0 && deployments[0].scores && (
-              <div className="animate-slideUp">
+              <div className="animate-slideUp mb-6 sm:mb-8">
                 <LatestScores deployment={deployments[0]} />
+              </div>
+            )}
+
+            {/* Deployment History Section */}
+            {loading ? (
+              <LoadingSpinner />
+            ) : error ? (
+              <ErrorMessage message={error} />
+            ) : (
+              <div className="animate-fadeIn">
+                <DeploymentHistory
+                  deployments={deployments}
+                  formatDate={formatDate}
+                />
               </div>
             )}
           </div>
@@ -334,19 +351,6 @@ export default function DashboardOverview() {
             </div>
           </div>
         </div>
-
-        {loading ? (
-          <LoadingSpinner />
-        ) : error ? (
-          <ErrorMessage message={error} />
-        ) : (
-          <div className="animate-fadeIn">
-            <DeploymentHistory
-              deployments={deployments}
-              formatDate={formatDate}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

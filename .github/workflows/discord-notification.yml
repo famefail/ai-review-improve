@@ -1,0 +1,116 @@
+# name: Discord Notifications
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       - develop
+#       - 'feature/**'
+#   pull_request:
+#     types: [opened, closed, reopened, synchronize]
+#     branches:
+#       - main
+#       - develop
+#   deployment:
+#     types: [created, completed]
+#   deployment_status:
+
+# jobs:
+#   notify-discord:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set environment variables
+#         run: |
+#           echo "GITHUB_EVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
+#           echo "GITHUB_ACTOR=${{ github.actor }}" >> $GITHUB_ENV
+#           echo "GITHUB_REF=${{ github.ref }}" >> $GITHUB_ENV
+#           echo "GITHUB_SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+          
+#       - name: Notify Discord - Push Event
+#         if: github.event_name == 'push'
+#         uses: sarisia/actions-status-discord@v1
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           status: ${{ job.status }}
+#           title: "🚀 New Push to ${{ github.ref_name }}"
+#           description: |
+#             **Branch:** `${{ github.ref_name }}`
+#             **Commit:** `${{ env.GITHUB_SHA_SHORT }}`
+#             **Message:** ${{ github.event.head_commit.message }}
+#             **By:** ${{ github.actor }}
+#           color: 0x3498db
+#           url: "${{ github.event.repository.html_url }}/commit/${{ github.sha }}"
+#           username: GitHub Actions
+#           avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
+#       - name: Notify Discord - Pull Request
+#         if: github.event_name == 'pull_request'
+#         uses: sarisia/actions-status-discord@v1
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           status: ${{ job.status }}
+#           title: "🔄 Pull Request ${{ github.event.action }}"
+#           description: |
+#             **Title:** ${{ github.event.pull_request.title }}
+#             **Number:** #${{ github.event.pull_request.number }}
+#             **From:** `${{ github.event.pull_request.head.ref }}` → `${{ github.event.pull_request.base.ref }}`
+#             **By:** ${{ github.actor }}
+#             **Status:** ${{ github.event.action }}
+#           color: ${{ github.event.action == 'opened' && '0x2ecc71' || github.event.action == 'closed' && '0xe74c3c' || '0xf39c12' }}
+#           url: "${{ github.event.pull_request.html_url }}"
+#           username: GitHub Actions
+#           avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
+#       - name: Notify Discord - Deployment
+#         if: github.event_name == 'deployment' || github.event_name == 'deployment_status'
+#         uses: sarisia/actions-status-discord@v1
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           status: ${{ job.status }}
+#           title: "🚢 Deployment Event"
+#           description: |
+#             **Environment:** ${{ github.event.deployment.environment || 'N/A' }}
+#             **Status:** ${{ github.event.deployment_status.state || github.event.deployment.task }}
+#             **By:** ${{ github.actor }}
+#           color: ${{ github.event.deployment_status.state == 'success' && '0x2ecc71' || github.event.deployment_status.state == 'failure' && '0xe74c3c' || '0xf39c12' }}
+#           url: "${{ github.event.repository.html_url }}"
+#           username: GitHub Actions
+#           avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
+#   notify-code-review:
+#     runs-on: ubuntu-latest
+#     if: github.event_name == 'push' || github.event_name == 'pull_request'
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+        
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
+          
+#       - name: Run code analysis
+#         id: code_analysis
+#         run: |
+#           # สมมติว่ามี script สำหรับวิเคราะห์โค้ด
+#           # npm install
+#           # npm run analyze
+#           echo "ANALYSIS_RESULT=Code quality score: 85%" >> $GITHUB_OUTPUT
+          
+#       - name: Send code review to Discord
+#         uses: sarisia/actions-status-discord@v1
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           status: ${{ job.status }}
+#           title: "🔍 Code Review Results"
+#           description: |
+#             **Branch:** `${{ github.ref_name }}`
+#             **Analysis Result:** ${{ steps.code_analysis.outputs.ANALYSIS_RESULT }}
+#             **Reviewed by:** AI Code Reviewer
+#           color: 0x9b59b6
+#           url: "${{ github.event.repository.html_url }}"
+#           username: AI Code Reviewer
+#           avatar_url: https://cdn-icons-png.flaticon.com/512/2784/2784487.png

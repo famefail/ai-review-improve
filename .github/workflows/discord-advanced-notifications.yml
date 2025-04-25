@@ -1,0 +1,205 @@
+# name: Advanced Discord Notifications
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       - develop
+#       - 'feature/**'
+#       - 'release/**'
+#       - 'hotfix/**'
+#   pull_request:
+#     types: [opened, closed, reopened, synchronize, ready_for_review, review_requested]
+#     branches:
+#       - main
+#       - develop
+#   release:
+#     types: [published, created]
+#   workflow_run:
+#     workflows: ["CI/CD Pipeline"]
+#     types: [completed]
+
+# jobs:
+#   branch-notification:
+#     runs-on: ubuntu-latest
+#     name: Branch Activity Notification
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+#         with:
+#           fetch-depth: 0
+
+#       - name: Get branch info
+#         id: branch_info
+#         run: |
+#           BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})
+#           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          
+#           if [[ $BRANCH_NAME == main ]]; then
+#             echo "branch_emoji=🚀" >> $GITHUB_OUTPUT
+#             echo "branch_color=16711680" >> $GITHUB_OUTPUT
+#           elif [[ $BRANCH_NAME == develop ]]; then
+#             echo "branch_emoji=🔧" >> $GITHUB_OUTPUT
+#             echo "branch_color=3447003" >> $GITHUB_OUTPUT
+#           elif [[ $BRANCH_NAME == feature/* ]]; then
+#             echo "branch_emoji=✨" >> $GITHUB_OUTPUT
+#             echo "branch_color=10181046" >> $GITHUB_OUTPUT
+#           elif [[ $BRANCH_NAME == release/* ]]; then
+#             echo "branch_emoji=📦" >> $GITHUB_OUTPUT
+#             echo "branch_color=15844367" >> $GITHUB_OUTPUT
+#           elif [[ $BRANCH_NAME == hotfix/* ]]; then
+#             echo "branch_emoji=🚑" >> $GITHUB_OUTPUT
+#             echo "branch_color=15158332" >> $GITHUB_OUTPUT
+#           else
+#             echo "branch_emoji=📝" >> $GITHUB_OUTPUT
+#             echo "branch_color=16777215" >> $GITHUB_OUTPUT
+#           fi
+
+#       - name: Get commit info
+#         id: commit_info
+#         run: |
+#           echo "commit_count=$(git rev-list --count ${{ github.event.before }}..${{ github.sha }})" >> $GITHUB_OUTPUT
+#           echo "commit_messages<<EOF" >> $GITHUB_OUTPUT
+#           git log --pretty=format:"• %s (%an)" ${{ github.event.before }}..${{ github.sha }} >> $GITHUB_OUTPUT
+#           echo "EOF" >> $GITHUB_OUTPUT
+
+#       - name: Send Discord notification
+#         uses: sarisia/actions-status-discord@v1
+#         if: github.event_name == 'push'
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           title: "${{ steps.branch_info.outputs.branch_emoji }} Push to `${{ steps.branch_info.outputs.branch_name }}`"
+#           description: |
+#             **Repository:** ${{ github.repository }}
+#             **Branch:** `${{ steps.branch_info.outputs.branch_name }}`
+#             **Commits:** ${{ steps.commit_info.outputs.commit_count }}
+#             **Author:** ${{ github.actor }}
+            
+#             📝 **Changes:**
+#             ${{ steps.commit_info.outputs.commit_messages }}
+#           color: ${{ steps.branch_info.outputs.branch_color }}
+#           url: "${{ github.event.repository.html_url }}/compare/${{ github.event.before }}...${{ github.sha }}"
+#           username: GitHub Bot
+#           avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
+#   pull-request-notification:
+#     runs-on: ubuntu-latest
+#     name: Pull Request Notification
+#     if: github.event_name == 'pull_request'
+#     steps:
+#       - name: Get PR status
+#         id: pr_status
+#         run: |
+#           PR_ACTION="${{ github.event.action }}"
+#           case $PR_ACTION in
+#             "opened")
+#               echo "status_emoji=🆕" >> $GITHUB_OUTPUT
+#               echo "status_color=3066993" >> $GITHUB_OUTPUT
+#               ;;
+#             "closed")
+#               if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+#                 echo "status_emoji=✅" >> $GITHUB_OUTPUT
+#                 echo "status_color=3066993" >> $GITHUB_OUTPUT
+#                 echo "status_text=Merged" >> $GITHUB_OUTPUT
+#               else
+#                 echo "status_emoji=❌" >> $GITHUB_OUTPUT
+#                 echo "status_color=15158332" >> $GITHUB_OUTPUT
+#                 echo "status_text=Closed without merging" >> $GITHUB_OUTPUT
+#               fi
+#               ;;
+#             "reopened")
+#               echo "status_emoji=🔄" >> $GITHUB_OUTPUT
+#               echo "status_color=15105570" >> $GITHUB_OUTPUT
+#               ;;
+#             "synchronize")
+#               echo "status_emoji=🔄" >> $GITHUB_OUTPUT
+#               echo "status_color=15844367" >> $GITHUB_OUTPUT
+#               ;;
+#             "review_requested")
+#               echo "status_emoji=👀" >> $GITHUB_OUTPUT
+#               echo "status_color=3447003" >> $GITHUB_OUTPUT
+#               ;;
+#             "ready_for_review")
+#               echo "status_emoji=✅" >> $GITHUB_OUTPUT
+#               echo "status_color=3066993" >> $GITHUB_OUTPUT
+#               ;;
+#             *)
+#               echo "status_emoji=ℹ️" >> $GITHUB_OUTPUT
+#               echo "status_color=7506394" >> $GITHUB_OUTPUT
+#               ;;
+#           esac
+
+#       - name: Send PR notification
+#         uses: sarisia/actions-status-discord@v1
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           title: "${{ steps.pr_status.outputs.status_emoji }} Pull Request #${{ github.event.pull_request.number }} ${{ github.event.action }}"
+#           description: |
+#             **Title:** ${{ github.event.pull_request.title }}
+#             **Author:** ${{ github.event.pull_request.user.login }}
+#             **From:** `${{ github.event.pull_request.head.ref }}` → `${{ github.event.pull_request.base.ref }}`
+#             **Status:** ${{ steps.pr_status.outputs.status_text || github.event.action }}
+            
+#             ${{ github.event.pull_request.body }}
+#           color: ${{ steps.pr_status.outputs.status_color }}
+#           url: "${{ github.event.pull_request.html_url }}"
+#           username: GitHub PR Bot
+#           avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
+#   release-notification:
+#     runs-on: ubuntu-latest
+#     name: Release Notification
+#     if: github.event_name == 'release'
+#     steps:
+#       - name: Send release notification
+#         uses: sarisia/actions-status-discord@v1
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           title: "🎉 New Release: ${{ github.event.release.tag_name }}"
+#           description: |
+#             **Release Name:** ${{ github.event.release.name }}
+#             **Tag:** ${{ github.event.release.tag_name }}
+#             **Author:** ${{ github.event.release.author.login }}
+#             **Pre-release:** ${{ github.event.release.prerelease }}
+            
+#             📝 **Release Notes:**
+#             ${{ github.event.release.body }}
+#           color: 5793266
+#           url: "${{ github.event.release.html_url }}"
+#           username: GitHub Release Bot
+#           avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
+#   workflow-status-notification:
+#     runs-on: ubuntu-latest
+#     name: Workflow Status Notification
+#     if: github.event_name == 'workflow_run'
+#     steps:
+#       - name: Get workflow status
+#         id: workflow_status
+#         run: |
+#           if [ "${{ github.event.workflow_run.conclusion }}" == "success" ]; then
+#             echo "status_emoji=✅" >> $GITHUB_OUTPUT
+#             echo "status_color=3066993" >> $GITHUB_OUTPUT
+#           elif [ "${{ github.event.workflow_run.conclusion }}" == "failure" ]; then
+#             echo "status_emoji=❌" >> $GITHUB_OUTPUT
+#             echo "status_color=15158332" >> $GITHUB_OUTPUT
+#           else
+#             echo "status_emoji=⚠️" >> $GITHUB_OUTPUT
+#             echo "status_color=15844367" >> $GITHUB_OUTPUT
+#           fi
+
+#       - name: Send workflow status
+#         uses: sarisia/actions-status-discord@v1
+#         with:
+#           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#           title: "${{ steps.workflow_status.outputs.status_emoji }} Workflow: ${{ github.event.workflow_run.name }}"
+#           description: |
+#             **Status:** ${{ github.event.workflow_run.conclusion }}
+#             **Branch:** `${{ github.event.workflow_run.head_branch }}`
+#             **Commit:** `${{ github.event.workflow_run.head_sha }}`
+#             **Run Number:** ${{ github.event.workflow_run.run_number }}
+#             **Duration:** ${{ github.event.workflow_run.updated_at }} - ${{ github.event.workflow_run.created_at }}
+#           color: ${{ steps.workflow_status.outputs.status_color }}
+#           url: "${{ github.event.workflow_run.html_url }}"
+#           username: GitHub CI/CD
+#           avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
