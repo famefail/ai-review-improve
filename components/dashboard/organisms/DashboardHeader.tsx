@@ -1,37 +1,67 @@
-import Link from "next/link";
+import { useTheme } from "@/contexts/ThemeContext";
 
-export default function DashboardHeader() {
+import FeatureCard from "../molecules/FeatureCard";
+
+export default function FeaturesOverview() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const features = [
+    {
+      id: "discord-bot",
+      icon: "🤖",
+      title: "Discord Bot แจ้งเตือน",
+      description:
+        "รับแจ้งเตือนจาก GitHub เมื่อมีการ deploy หรือ merge โค้ด และส่งข้อความแจ้งเตือนใน Discord channel",
+      color: "from-purple-500 to-indigo-600",
+    },
+    {
+      id: "dashboard-overview",
+      icon: "📊",
+      title: "Dashboard ติดตามคุณภาพโค้ด",
+      description:
+        "แสดงประวัติการ deploy และการวิเคราะห์คุณภาพโค้ดตามเกณฑ์ต่างๆ",
+      color: "from-blue-500 to-cyan-600",
+    },
+  ];
+
   return (
-    <header className="relative">
-      <div className="flex justify-between items-center">
-        <div className="text-white">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Dashboard ติดตามคุณภาพโค้ด
-          </h1>
-          <p className="text-blue-100 mt-2 text-lg">
-            ติดตามการ deploy และคุณภาพโค้ดของโปรเจ็คทั้งหมด
-          </p>
-        </div>
-        <Link
-          className="group flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white rounded-lg transition-all duration-300 hover:scale-105 border border-white/20"
-          href="/"
+    <div className="relative group">
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300" />
+      <div
+        className={`relative ${
+          isDark ? "bg-gray-800/90" : "bg-white/90"
+        } backdrop-blur-lg rounded-xl shadow-lg overflow-hidden`}
+      >
+        <div
+          className={`px-4 sm:px-6 py-4 border-b ${
+            isDark
+              ? "border-gray-700 bg-gradient-to-r from-purple-900/50 to-blue-900/50"
+              : "border-gray-100 bg-gradient-to-r from-purple-50 to-blue-50"
+          }`}
         >
-          <svg
-            className="w-5 h-5 transition-transform group-hover:-translate-x-1"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <h2
+            className={`text-lg sm:text-xl font-semibold ${
+              isDark ? "text-white" : "text-gray-900"
+            }`}
           >
-            <path
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-            />
-          </svg>
-          กลับหน้าหลัก
-        </Link>
+            ฟีเจอร์หลัก
+          </h2>
+        </div>
+        <div className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            {features.map((feature) => (
+              <FeatureCard
+                key={feature.id}
+                color={feature.color}
+                description={feature.description}
+                icon={feature.icon}
+                title={feature.title}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-    </header>
+    </div>
   );
 }

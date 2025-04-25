@@ -1,25 +1,38 @@
+import { useTheme } from "@/contexts/ThemeContext";
+
 interface ScoreCircleProps {
   score?: number;
 }
 
 export default function ScoreCircle({ score }: ScoreCircleProps) {
-  const getScoreColor = (score?: number) => {
-    if (!score) return "bg-gray-200";
-    if (score >= 80) return "bg-green-500";
-    if (score >= 60) return "bg-yellow-500";
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
-    return "bg-red-500";
+  const getScoreColor = (score?: number) => {
+    if (!score) return isDark ? "bg-gray-700" : "bg-gray-200";
+    if (score >= 80) return isDark ? "bg-green-500" : "bg-green-500";
+    if (score >= 60) return isDark ? "bg-yellow-500" : "bg-yellow-500";
+
+    return isDark ? "bg-red-500" : "bg-red-500";
+  };
+
+  const getTextColor = (score?: number) => {
+    if (!score) return isDark ? "text-gray-300" : "text-gray-500";
+
+    return "text-white";
   };
 
   return score ? (
-    <div className="flex items-center">
+    <div className="flex items-center justify-center">
       <div
-        className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${getScoreColor(score)}`}
+        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-transform hover:scale-110 ${getScoreColor(score)} ${getTextColor(score)}`}
       >
         {score}
       </div>
     </div>
   ) : (
-    <span className="text-gray-400">ไม่มีข้อมูล</span>
+    <span className={`text-sm ${isDark ? "text-gray-400" : "text-gray-400"}`}>
+      ไม่มีข้อมูล
+    </span>
   );
 }
